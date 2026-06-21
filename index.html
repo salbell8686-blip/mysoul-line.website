@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Soul Line — Salena Bell</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:    #0A0E1A;
+    --smoke:   #141928;
+    --mid:     #1E2A42;
+    --gold:    #C8962A;
+    --goldlt:  #E8B84B;
+    --goldglow:#F0C96080;
+    --ghost:   #EEE8DC;
+    --dim:     #8A9BB8;
+    --smokegr: #3A4A6A;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--ghost);
+    font-family: 'Lora', Georgia, serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 22px 48px;
+    background: linear-gradient(180deg, #0A0E1Aee 0%, transparent 100%);
+    backdrop-filter: blur(2px);
+  }
+  .nav-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 15px; letter-spacing: 0.25em;
+    color: var(--goldlt); text-decoration: none;
+    text-transform: uppercase;
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: var(--dim); font-family: 'DM Sans', sans-serif;
+    font-size: 13px; letter-spacing: 0.1em; text-decoration: none;
+    text-transform: uppercase; transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--goldlt); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative; overflow: hidden;
+  }
+
+  /* Smoke background */
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 40%, #1A2A5022 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 30% 60%, #0A1530aa 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 70% 30%, #0D1E3888 0%, transparent 60%);
+    animation: smokeShift 12s ease-in-out infinite alternate;
+  }
+  @keyframes smokeShift {
+    0%   { opacity: 0.6; transform: scale(1); }
+    100% { opacity: 1;   transform: scale(1.05); }
+  }
+
+  /* DNA helix canvas */
+  #helixCanvas {
+    position: absolute; top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 180px; height: 100%;
+    opacity: 0.35; pointer-events: none;
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 700px; }
+
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; letter-spacing: 0.3em;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0; animation: fadeUp 1s 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(52px, 10vw, 96px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    color: transparent;
+    background: linear-gradient(160deg, var(--goldlt) 20%, var(--gold) 60%, #A07020 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin-bottom: 8px;
+    opacity: 0; animation: fadeUp 1.2s 0.5s forwards;
+  }
+
+  .hero-rule {
+    width: 1px; height: 0;
+    background: linear-gradient(180deg, transparent, var(--gold), transparent);
+    margin: 28px auto;
+    animation: growLine 1.4s 1s forwards;
+  }
+  @keyframes growLine {
+    to { height: 60px; }
+  }
+
+  .hero-subtitle {
+    font-family: 'Lora', serif;
+    font-size: clamp(14px, 2.5vw, 18px);
+    font-style: italic;
+    color: var(--dim);
+    line-height: 1.8;
+    letter-spacing: 0.03em;
+    max-width: 480px; margin: 0 auto 48px;
+    opacity: 0; animation: fadeUp 1s 1.2s forwards;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    padding: 16px 44px;
+    border: 1px solid var(--gold);
+    color: var(--goldlt);
+    font-family: 'Cinzel', serif;
+    font-size: 12px; letter-spacing: 0.22em;
+    text-transform: uppercase; text-decoration: none;
+    position: relative; overflow: hidden;
+    transition: color 0.4s;
+    opacity: 0; animation: fadeUp 1s 1.5s forwards;
+  }
+  .hero-cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--gold);
+    transform: translateX(-101%);
+    transition: transform 0.4s ease;
+  }
+  .hero-cta:hover::before { transform: translateX(0); }
+  .hero-cta:hover { color: var(--navy); }
+  .hero-cta span { position: relative; z-index: 1; }
+
+  .scroll-hint {
+    position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity: 0; animation: fadeUp 1s 2s forwards;
+  }
+  .scroll-hint p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px; letter-spacing: 0.2em;
+    color: var(--smokegr); text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(180deg, var(--smokegr), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%,100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── INTRO STRIP ── */
+  .intro-strip {
+    padding: 80px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--smokegr);
+    border-top: 1px solid #1E2A4288;
+    border-bottom: 1px solid #1E2A4288;
+  }
+  .intro-cell {
+    background: var(--smoke);
+    padding: 40px 36px;
+    text-align: center;
+  }
+  .intro-cell-icon {
+    font-size: 28px; margin-bottom: 16px;
+    display: block;
+  }
+  .intro-cell h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 11px; letter-spacing: 0.2em;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .intro-cell p {
+    font-size: 14px; line-height: 1.75;
+    color: var(--dim);
+  }
+
+  /* ── ABOUT THE BOOK ── */
+  .about {
+    padding: 120px 48px;
+    max-width: 1100px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px; align-items: center;
+  }
+  .about-book-wrap {
+    position: relative;
+  }
+  .about-book-img {
+    width: 100%;
+    border-radius: 4px;
+    box-shadow:
+      0 0 60px #C8962A22,
+      0 40px 80px #00000088,
+      -8px 8px 0 #C8962A11;
+    display: block;
+    transition: transform 0.6s ease, box-shadow 0.6s ease;
+  }
+  .about-book-img:hover {
+    transform: translateY(-6px) rotate(-1deg);
+    box-shadow: 0 0 80px #C8962A44, 0 60px 100px #000000AA;
+  }
+  .about-glow {
+    position: absolute; inset: -20px;
+    background: radial-gradient(ellipse at center, #C8962A0D 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .about-text {}
+  .section-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px; letter-spacing: 0.3em;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .section-eyebrow::after {
+    content: '';
+    flex: 1; max-width: 40px; height: 1px;
+    background: var(--gold);
+  }
+  .about-text h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--ghost);
+    margin-bottom: 24px;
+  }
+  .about-text h2 em {
+    color: var(--goldlt);
+    font-style: italic;
+  }
+  .about-text p {
+    font-size: 16px; line-height: 1.85;
+    color: var(--dim); margin-bottom: 20px;
+  }
+  .about-text p strong {
+    color: var(--ghost); font-weight: 500;
+  }
+  .about-author {
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid #1E2A42;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .author-initial {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--smokegr));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel', serif; font-size: 18px;
+    color: var(--navy); flex-shrink: 0;
+  }
+  .author-info p:first-child {
+    font-family: 'Cinzel', serif; font-size: 13px;
+    color: var(--ghost); margin-bottom: 2px;
+  }
+  .author-info p:last-child {
+    font-size: 12px; color: var(--dim);
+    font-style: italic;
+  }
+
+  /* ── CHAPTER PULL QUOTE ── */
+  .pullquote {
+    padding: 100px 24px;
+    text-align: center;
+    position: relative;
+    background: linear-gradient(180deg, var(--navy) 0%, #0E1525 50%, var(--navy) 100%);
+  }
+  .pullquote::before, .pullquote::after {
+    content: '';
+    display: block;
+    width: 1px; height: 60px;
+    background: linear-gradient(180deg, transparent, var(--gold), transparent);
+    margin: 0 auto;
+  }
+  .pullquote blockquote {
+    max-width: 680px; margin: 40px auto;
+    font-family: 'Lora', serif;
+    font-size: clamp(20px, 3.5vw, 32px);
+    font-style: italic;
+    line-height: 1.65;
+    color: var(--ghost);
+    letter-spacing: 0.02em;
+  }
+  .pullquote blockquote span { color: var(--goldlt); }
+  .pullquote cite {
+    display: block; margin-top: 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; letter-spacing: 0.2em;
+    color: var(--dim); text-transform: uppercase;
+    font-style: normal;
+  }
+
+  /* ── WHAT YOU'LL DISCOVER ── */
+  .discover {
+    padding: 100px 48px;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .discover-header { text-align: center; margin-bottom: 64px; }
+  .discover-header h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(24px, 4vw, 36px);
+    color: var(--ghost); margin-top: 12px;
+  }
+  .discover-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    background: #1A2340;
+  }
+  .discover-item {
+    background: var(--navy);
+    padding: 40px 36px;
+    position: relative;
+    transition: background 0.3s;
+  }
+  .discover-item:hover { background: var(--smoke); }
+  .discover-item::before {
+    content: attr(data-glyph);
+    position: absolute; top: 36px; right: 36px;
+    font-family: 'Cinzel', serif;
+    font-size: 40px; color: #C8962A0A;
+    font-weight: 700;
+  }
+  .discover-item h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 14px; letter-spacing: 0.12em;
+    color: var(--goldlt); margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .discover-item p {
+    font-size: 14px; line-height: 1.8;
+    color: var(--dim);
+  }
+
+  /* ── COMMUNITY ── */
+  .community {
+    padding: 100px 48px;
+    text-align: center;
+    background: var(--smoke);
+    border-top: 1px solid #1E2A42;
+    border-bottom: 1px solid #1E2A42;
+  }
+  .community h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(24px, 4vw, 36px);
+    color: var(--ghost); margin: 12px 0 20px;
+  }
+  .community p {
+    font-size: 16px; line-height: 1.8;
+    color: var(--dim); max-width: 520px;
+    margin: 0 auto 40px;
+  }
+  .community-links {
+    display: flex; justify-content: center;
+    gap: 16px; flex-wrap: wrap;
+  }
+  .btn-ghost {
+    display: inline-block;
+    padding: 14px 36px;
+    border: 1px solid var(--smokegr);
+    color: var(--dim);
+    font-family: 'Cinzel', serif;
+    font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; text-decoration: none;
+    transition: all 0.3s;
+  }
+  .btn-ghost:hover {
+    border-color: var(--gold); color: var(--goldlt);
+  }
+  .btn-primary {
+    display: inline-block;
+    padding: 14px 36px;
+    background: linear-gradient(135deg, var(--gold), #A07020);
+    color: var(--navy);
+    font-family: 'Cinzel', serif;
+    font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; text-decoration: none;
+    transition: all 0.3s;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* ── ASSESSMENT TEASER ── */
+  .assessment {
+    padding: 120px 48px;
+    max-width: 800px; margin: 0 auto;
+    text-align: center;
+  }
+  .assessment h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(24px, 4vw, 38px);
+    color: var(--ghost); margin: 12px 0 24px;
+    line-height: 1.3;
+  }
+  .assessment p {
+    font-size: 16px; line-height: 1.85;
+    color: var(--dim); margin-bottom: 40px;
+  }
+  .assessment-dna {
+    width: 2px; height: 80px;
+    background: linear-gradient(180deg, transparent, var(--gold), transparent);
+    margin: 0 auto 40px;
+    position: relative;
+  }
+  .assessment-dna::before, .assessment-dna::after {
+    content: '';
+    position: absolute;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gold);
+    left: 50%; transform: translateX(-50%);
+  }
+  .assessment-dna::before { top: 0; }
+  .assessment-dna::after  { bottom: 0; }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 60px 48px 40px;
+    border-top: 1px solid #1A2340;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .footer-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 20px; letter-spacing: 0.2em;
+    color: var(--gold);
+  }
+  .footer-logo span {
+    display: block;
+    font-size: 10px; letter-spacing: 0.25em;
+    color: var(--dim); margin-top: 4px;
+    font-family: 'DM Sans', sans-serif;
+    text-transform: uppercase;
+  }
+  .footer-links {
+    display: flex; gap: 28px; list-style: none;
+    flex-wrap: wrap;
+  }
+  .footer-links a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; letter-spacing: 0.1em;
+    color: var(--dim); text-decoration: none;
+    text-transform: uppercase; transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--goldlt); }
+  .footer-copy {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; color: #3A4A6A;
+    width: 100%; text-align: center;
+    margin-top: 20px; padding-top: 20px;
+    border-top: 1px solid #12192E;
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: #05070Ddd;
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+  .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+  .modal-box {
+    background: linear-gradient(165deg, #131A2C, #0C1120);
+    border: 1px solid #2A3858;
+    border-radius: 6px;
+    max-width: 440px; width: 100%;
+    padding: 48px 40px;
+    position: relative;
+    text-align: center;
+    transform: translateY(20px) scale(0.98);
+    transition: transform 0.35s ease;
+    box-shadow: 0 0 80px #C8962A11, 0 40px 80px #000000aa;
+  }
+  .modal-overlay.active .modal-box { transform: translateY(0) scale(1); }
+
+  .modal-close {
+    position: absolute; top: 18px; right: 18px;
+    width: 28px; height: 28px;
+    border: 1px solid var(--smokegr);
+    border-radius: 50%;
+    background: none; cursor: pointer;
+    color: var(--dim); font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+  }
+  .modal-close:hover { border-color: var(--gold); color: var(--goldlt); }
+
+  .modal-glyph {
+    width: 1px; height: 36px;
+    background: linear-gradient(180deg, transparent, var(--gold));
+    margin: 0 auto 20px;
+  }
+  .modal-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px; letter-spacing: 0.28em;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .modal-box h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 24px; color: var(--ghost);
+    margin-bottom: 14px; line-height: 1.3;
+  }
+  .modal-box p {
+    font-size: 14px; line-height: 1.75;
+    color: var(--dim); margin-bottom: 28px;
+  }
+  .modal-form {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .modal-form input {
+    background: #0A0E1A;
+    border: 1px solid #2A3858;
+    border-radius: 4px;
+    padding: 14px 16px;
+    color: var(--ghost);
+    font-family: 'Lora', serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .modal-form input:focus { border-color: var(--gold); }
+  .modal-form input::placeholder { color: #4A5B7A; }
+
+  .modal-submit {
+    background: linear-gradient(135deg, var(--gold), #A07020);
+    border: none; border-radius: 4px;
+    padding: 14px 0;
+    color: var(--navy);
+    font-family: 'Cinzel', serif;
+    font-size: 12px; letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.3s, transform 0.3s;
+    margin-top: 4px;
+  }
+  .modal-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+  .modal-submit:disabled { opacity: 0.5; cursor: default; transform: none; }
+
+  .modal-success {
+    display: none;
+  }
+  .modal-success.active { display: block; }
+  .modal-success-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 1px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 22px; color: var(--goldlt);
+  }
+
+  .modal-fineprint {
+    font-size: 11px; color: #4A5B7A;
+    margin-top: 18px; margin-bottom: 0;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1; transform: translateY(0);
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    nav { padding: 18px 24px; }
+    .nav-links { display: none; }
+    .intro-strip { grid-template-columns: 1fr; }
+    .about {
+      grid-template-columns: 1fr;
+      padding: 60px 24px;
+      gap: 48px;
+    }
+    .discover { padding: 60px 24px; }
+    .discover-grid { grid-template-columns: 1fr; }
+    .community { padding: 60px 24px; }
+    .assessment { padding: 60px 24px; }
+    footer { padding: 40px 24px 32px; flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hidden static duplicates so Netlify's build bot can detect these forms.
+     The real, visible forms are inside the modals below and submit via JS fetch(). -->
+<div style="display:none">
+  <form name="reader-circle" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="text" name="bot-field"/>
+    <input type="text" name="first_name"/>
+    <input type="email" name="email"/>
+  </form>
+  <form name="get-the-book" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="text" name="bot-field"/>
+    <input type="email" name="email"/>
+  </form>
+  <form name="assessment-waitlist" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="text" name="bot-field"/>
+    <input type="email" name="email"/>
+  </form>
+  <form name="contact" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="text" name="bot-field"/>
+    <input type="text" name="name"/>
+    <input type="email" name="email"/>
+    <input type="text" name="message"/>
+  </form>
+</div>
+
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Soul Line</a>
+  <ul class="nav-links">
+    <li><a href="#about">The Book</a></li>
+    <li><a href="#discover">Discover</a></li>
+    <li><a href="#assessment">Assessment</a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="#" style="color:var(--goldlt)" onclick="openModal('buy');return false;">Get the Book</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="helixCanvas"></canvas>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Salena Bell</p>
+    <h1 class="hero-title">SOUL LINE</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-subtitle">Map Your DNA. Trace Your Lineage.<br>Discover Who Your Soul Has Always Been.</p>
+    <a href="#about" class="hero-cta"><span>Begin the Journey</span></a>
+    <p style="margin-top:18px;font-size:11px;color:var(--smokegr);letter-spacing:0.08em">
+      <a href="#" onclick="openModal('buy');return false;" style="color:var(--smokegr);text-decoration:underline;text-underline-offset:3px">or get the book now →</a>
+    </p>
+  </div>
+  <div class="scroll-hint">
+    <p>Scroll</p>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- INTRO STRIP -->
+<div class="intro-strip">
+  <div class="intro-cell">
+    <span class="intro-cell-icon">🧬</span>
+    <h3>Map Your DNA</h3>
+    <p>Understand the biological and energetic blueprint written into your lineage before you were born.</p>
+  </div>
+  <div class="intro-cell">
+    <span class="intro-cell-icon">🌀</span>
+    <h3>Trace Your Lineage</h3>
+    <p>Follow the thread of your ancestors — their patterns, their wounds, their gifts — back to their source.</p>
+  </div>
+  <div class="intro-cell">
+    <span class="intro-cell-icon">✦</span>
+    <h3>Discover Your Soul</h3>
+    <p>Who were you before the world shaped you? Soul Line is the map back to that original self.</p>
+  </div>
+</div>
+
+<!-- ABOUT THE BOOK -->
+<section class="about" id="about">
+  <div class="about-book-wrap reveal">
+    <div class="about-glow"></div>
+    <!-- Replace src with actual book image path when on your site -->
+    <img
+      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='560' viewBox='0 0 400 560'%3E%3Crect width='400' height='560' fill='%230A0E1A'/%3E%3Crect x='30' width='370' height='560' rx='4' fill='%23111828'/%3E%3Ctext x='200' y='100' font-family='Georgia' font-size='36' fill='%23C8962A' text-anchor='middle' letter-spacing='8'%3ESOUL LINE%3C/text%3E%3Cellipse cx='200' cy='320' rx='60' ry='140' fill='none' stroke='%23C8962A' stroke-width='1.5' opacity='0.6'/%3E%3Cellipse cx='200' cy='320' rx='60' ry='140' fill='none' stroke='%23C8962A' stroke-width='1.5' opacity='0.6' transform='rotate(60 200 320)'/%3E%3Cellipse cx='200' cy='320' rx='60' ry='140' fill='none' stroke='%23E8B84B' stroke-width='1' opacity='0.3' transform='rotate(120 200 320)'/%3E%3Ctext x='200' y='490' font-family='Georgia' font-size='11' fill='%238A9BB8' text-anchor='middle'%3ESalena Bell%3C/text%3E%3C/svg%3E"
+      alt="Soul Line book cover"
+      class="about-book-img"
+      id="bookImg"
+    />
+  </div>
+  <div class="about-text reveal">
+    <p class="section-eyebrow">About the Book</p>
+    <h2>You were never lost.<br>You were <em>waiting to be found.</em></h2>
+    <p>Soul Line is a journey into the intersection of <strong>ancestral memory, spiritual identity, and DNA</strong> — the invisible thread that connects who you are today to every soul that came before you.</p>
+    <p>This book doesn't ask you to believe anything. It asks you to <strong>look closer</strong> — at the patterns in your family, the recurring themes in your life, the unexplained knowing you've always carried — and find the lineage behind it all.</p>
+    <p>Whether you're at the beginning of your awakening or deep in it, Soul Line gives you language for what you've already been feeling.</p>
+    <div class="about-author">
+      <div class="author-initial">S</div>
+      <div class="author-info">
+        <p>Salena Bell</p>
+        <p>Author and Designer</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PULL QUOTE -->
+<div class="pullquote">
+  <blockquote class="reveal">
+    "Your DNA is not just biology. It is <span>memory</span>. And memory, once awakened, becomes <span>destiny</span>."
+    <cite>— Soul Line</cite>
+  </blockquote>
+</div>
+
+<!-- WHAT YOU'LL DISCOVER -->
+<section class="discover" id="discover">
+  <div class="discover-header reveal">
+    <p class="section-eyebrow" style="justify-content:center">Inside Soul Line</p>
+    <h2>What You'll Discover</h2>
+  </div>
+  <div class="discover-grid">
+    <div class="discover-item reveal" data-glyph="I">
+      <h3>The Soul Blueprint</h3>
+      <p>How your energetic and genetic inheritance shapes your personality, purpose, and the challenges you were born to transform.</p>
+    </div>
+    <div class="discover-item reveal" data-glyph="II">
+      <h3>Ancestral Patterns</h3>
+      <p>Identify the emotional and behavioral loops passed down through your lineage — and learn to break what no longer serves you.</p>
+    </div>
+    <div class="discover-item reveal" data-glyph="III">
+      <h3>Your Soul Type</h3>
+      <p>Discover the archetype your soul most resonates with and how it has expressed itself through every generation before you.</p>
+    </div>
+    <div class="discover-item reveal" data-glyph="IV">
+      <h3>The Awakening Path</h3>
+      <p>A practical framework for integrating what you discover — turning lineage knowledge into daily spiritual practice and clarity.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ASSESSMENT TEASER -->
+<section class="assessment" id="assessment">
+  <div class="reveal">
+    <p class="section-eyebrow" style="justify-content:center">Soul Line Assessment</p>
+    <h2>What does your soul line reveal about you?</h2>
+    <div class="assessment-dna"></div>
+    <p>Take the Soul Line Assessment — a guided reflection designed to surface your ancestral patterns, energetic archetype, and the soul thread running through your life story. Your results create a personal profile you keep.</p>
+    <a href="#" class="hero-cta" style="opacity:1;animation:none" onclick="openModal('assessment');return false;"><span>Take the Assessment</span></a>
+    <p style="margin-top:20px;font-size:12px;color:var(--smokegr)">Coming soon · Be the first to know</p>
+  </div>
+</section>
+
+<!-- COMMUNITY -->
+<section class="community" id="community">
+  <div class="reveal">
+    <p class="section-eyebrow" style="justify-content:center">The Community</p>
+    <h2>You don't walk this path alone.</h2>
+    <p>Connect with readers who are mapping their own soul lines — share what you're discovering, ask questions, and find your people.</p>
+    <div class="community-links">
+      <a href="#" class="btn-ghost" onclick="openModal('community');return false;">Join the Reader Circle</a>
+      <a href="#" class="btn-primary" onclick="openModal('buy');return false;">Get Soul Line</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    SOUL LINE
+    <span>by Salena Bell</span>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#about">The Book</a></li>
+    <li><a href="#assessment">Assessment</a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="#" onclick="openModal('contact');return false;">Contact</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 Salena Bell · Soul Line · All rights reserved.</p>
+</footer>
+
+<script>
+// ── DNA HELIX ANIMATION ──────────────────────────────────────────
+const canvas = document.getElementById('helixCanvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  canvas.width = 180;
+  canvas.height = canvas.parentElement.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+let t = 0;
+function drawHelix() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const cx = canvas.width / 2;
+  const h = canvas.height;
+  const freq = 0.018;
+  const amp = 55;
+  const nodeCount = 18;
+
+  // Draw two strands
+  for (let strand = 0; strand < 2; strand++) {
+    const offset = strand === 0 ? 0 : Math.PI;
+    ctx.beginPath();
+    for (let y = 0; y < h; y += 2) {
+      const x = cx + Math.sin(y * freq + t + offset) * amp;
+      if (y === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    const grad = ctx.createLinearGradient(0, 0, 0, h);
+    grad.addColorStop(0, 'transparent');
+    grad.addColorStop(0.2, '#C8962A88');
+    grad.addColorStop(0.5, '#E8B84BAA');
+    grad.addColorStop(0.8, '#C8962A88');
+    grad.addColorStop(1, 'transparent');
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+
+  // Draw cross-rungs
+  for (let i = 0; i < nodeCount; i++) {
+    const y = (h / nodeCount) * i + ((t * 30) % (h / nodeCount));
+    if (y > h) continue;
+    const x1 = cx + Math.sin(y * freq + t) * amp;
+    const x2 = cx + Math.sin(y * freq + t + Math.PI) * amp;
+    const alpha = 0.15 + 0.2 * Math.abs(Math.sin(y * freq + t));
+
+    ctx.beginPath();
+    ctx.moveTo(x1, y);
+    ctx.lineTo(x2, y);
+    ctx.strokeStyle = `rgba(200, 150, 42, ${alpha})`;
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+
+    // Node dots
+    [x1, x2].forEach(x => {
+      ctx.beginPath();
+      ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(232, 184, 75, ${alpha + 0.1})`;
+      ctx.fill();
+    });
+  }
+
+  t += 0.004;
+  requestAnimationFrame(drawHelix);
+}
+drawHelix();
+
+// Load actual book image if available
+const bookImg = document.getElementById('bookImg');
+// To use real photo: bookImg.src = 'your-book-image.jpg';
+
+// ── MODAL SYSTEM ─────────────────────────────────────────────────
+const overlay = document.getElementById('modalOverlay');
+const panels = document.querySelectorAll('.modal-panel');
+const successBox = document.getElementById('modalSuccess');
+const successTitle = document.getElementById('successTitle');
+const successText = document.getElementById('successText');
+
+const successMessages = {
+  community: { title: "Welcome to the Circle.", text: "Check your inbox — you'll receive your first community update shortly." },
+  buy: { title: "On its way.", text: "Check your inbox for the link to Soul Line and your free excerpt from Act I." },
+  assessment: { title: "You're on the list.", text: "We'll email you the moment the Soul Line Assessment goes live." },
+  contact: { title: "Message sent.", text: "Salena will get back to you personally as soon as she can." },
+};
+
+function openModal(type) {
+  panels.forEach(p => p.style.display = p.dataset.panel === type ? 'block' : 'none');
+  successBox.classList.remove('active');
+  panels.forEach(p => { if (p.dataset.panel === type) p.style.display = 'block'; });
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+  // Reset to form view after transition
+  setTimeout(() => {
+    successBox.classList.remove('active');
+    panels.forEach(p => p.style.display = p.dataset.panel === 'community' ? 'block' : 'none');
+  }, 350);
+}
+
+function handleSubmit(e, type) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('.modal-submit');
+  const originalBtnText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  const formData = new FormData(form);
+  const body = new URLSearchParams(formData).toString();
+
+  fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body,
+  })
+    .then(() => {
+      panels.forEach(p => p.style.display = 'none');
+      successTitle.textContent = successMessages[type].title;
+      successText.textContent = successMessages[type].text;
+      successBox.classList.add('active');
+      form.reset();
+    })
+    .catch(() => {
+      alert("Something went wrong sending that — please try again in a moment.");
+    })
+    .finally(() => {
+      btn.disabled = false;
+      btn.textContent = originalBtnText;
+    });
+}
+
+overlay.addEventListener('click', (e) => {
+  if (e.target === overlay) closeModal();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal();
+});
+
+// ── SCROLL REVEAL ────────────────────────────────────────────────
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+reveals.forEach(el => observer.observe(el));
+</script>
+<!-- MODALS -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+
+    <!-- Reader Circle / Community -->
+    <div class="modal-panel" data-panel="community">
+      <div class="modal-glyph"></div>
+      <p class="modal-eyebrow">Reader Circle</p>
+      <h3>Join the Soul Line community</h3>
+      <p>Connect with readers tracing their own soul line. Get early access to community discussions, reflections, and updates from Salena.</p>
+      <form class="modal-form" name="reader-circle" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleSubmit(event,'community')">
+        <input type="hidden" name="form-name" value="reader-circle"/>
+        <input type="text" name="bot-field" style="display:none" tabindex="-1" autocomplete="off"/>
+        <input type="text" name="first_name" placeholder="First name" required/>
+        <input type="email" name="email" placeholder="Email address" required/>
+        <button type="submit" class="modal-submit">Join the Circle</button>
+      </form>
+      <p class="modal-fineprint">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <!-- Get the Book -->
+    <div class="modal-panel" data-panel="buy" style="display:none">
+      <div class="modal-glyph"></div>
+      <p class="modal-eyebrow">Soul Line · The Book</p>
+      <h3>Get your copy of Soul Line</h3>
+      <p>Enter your email and we'll send you the link to purchase Soul Line, plus a free excerpt from Act I.</p>
+      <form class="modal-form" name="get-the-book" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleSubmit(event,'buy')">
+        <input type="hidden" name="form-name" value="get-the-book"/>
+        <input type="text" name="bot-field" style="display:none" tabindex="-1" autocomplete="off"/>
+        <input type="email" name="email" placeholder="Email address" required/>
+        <button type="submit" class="modal-submit">Send Me the Link</button>
+      </form>
+      <p class="modal-fineprint">We'll also notify you the moment the assessment goes live.</p>
+    </div>
+
+    <!-- Assessment Waitlist -->
+    <div class="modal-panel" data-panel="assessment" style="display:none">
+      <div class="modal-glyph"></div>
+      <p class="modal-eyebrow">Soul Line Assessment</p>
+      <h3>Be first to take the assessment</h3>
+      <p>The Soul Line Assessment is in development. Join the waitlist and we'll notify you the moment it's ready — plus you'll get early access before the public launch.</p>
+      <form class="modal-form" name="assessment-waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleSubmit(event,'assessment')">
+        <input type="hidden" name="form-name" value="assessment-waitlist"/>
+        <input type="text" name="bot-field" style="display:none" tabindex="-1" autocomplete="off"/>
+        <input type="email" name="email" placeholder="Email address" required/>
+        <button type="submit" class="modal-submit">Notify Me</button>
+      </form>
+      <p class="modal-fineprint">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <!-- Contact -->
+    <div class="modal-panel" data-panel="contact" style="display:none">
+      <div class="modal-glyph"></div>
+      <p class="modal-eyebrow">Get in Touch</p>
+      <h3>Contact Salena</h3>
+      <p>Questions about Soul Line, press inquiries, or just want to share what the book stirred in you? Send a message below.</p>
+      <form class="modal-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleSubmit(event,'contact')">
+        <input type="hidden" name="form-name" value="contact"/>
+        <input type="text" name="bot-field" style="display:none" tabindex="-1" autocomplete="off"/>
+        <input type="text" name="name" placeholder="Your name" required/>
+        <input type="email" name="email" placeholder="Email address" required/>
+        <input type="text" name="message" placeholder="Message" required/>
+        <button type="submit" class="modal-submit">Send Message</button>
+      </form>
+    </div>
+
+    <!-- Success State (shared) -->
+    <div class="modal-success" id="modalSuccess">
+      <div class="modal-success-icon">✓</div>
+      <h3 id="successTitle">You're in.</h3>
+      <p id="successText">Thank you — check your inbox for confirmation.</p>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
